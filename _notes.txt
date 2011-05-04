@@ -1,0 +1,15 @@
+****************************************************
+JECA - Joel Ezra Christensen Allegro (mosty allegro)
+****************************************************
+
+This program was made with (as follows):
+
+The D Programming langage: www.digitalmars.com
+Allegro 5: www.liballeg.org
+DAllegro: https://github.com/SiegeLord/DAllegro5
+
+5 May 2011 \/
+There's a lot more to do, like: configureration(sp) file module, sound file module, trig math module.
+
+03 May 2011 \/
+Merge JECA with JTools!
