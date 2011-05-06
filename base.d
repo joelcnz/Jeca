@@ -1,3 +1,4 @@
+//#not sure about this
 //#needs in's
 //#may not need to check args length
 //#should be under file, and have append in its name
@@ -15,7 +16,7 @@
  * 
  * eg.
  * ---
- * Init( split("-wxh 640 480") ); // full DISPLAY, and DISPLAY dimentions(sp) also "-mode window"
+ * Init( "-wxh 640 480".split ); // full DISPLAY, and DISPLAY dimentions(sp) also "-mode window"
  * ---
  * eg.
  * ---
@@ -57,12 +58,11 @@ enum {
 // ALLEGRO_INIT | TIMER | KEYBOARD | MOUSE | SOUND | GRAPHICS
 
 /// declearations  and default settings for the graphic mode
-int //GFX_MODE = GFX_AUTODETECT_WINDOWED,
+int
 	SCX = 800,
 	SCY = 600;
-	//DEPTH = 32;
 
-// not sure about this
+//#not sure about this
 enum {
 	GET_DISPLAY_DIMENTIONS
 }
@@ -267,6 +267,7 @@ void shutdown_input()
 
    al_destroy_event_queue(input_queue);
    input_queue = null;
+   writeln( "shutdown_input exiting.." );
 }
 
 /** helper function to add a keypress to a buffer */

@@ -9,7 +9,6 @@ import jeca.all;
 void main( string[] args ) {
 	scope( exit ) {
 		shutdown_input;
-		writeln( "shutdown_input done" );
 	}
 	if ( args.length != 4 ) {
 		writeln( "test <ttf name> <picture file name> <sound file name>" );
