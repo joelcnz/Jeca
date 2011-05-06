@@ -8,7 +8,6 @@ private {
 	import std.stdio;
 	import std.string;
 	import std.file;
-//	import allegro5.allegro;
 	import jeca.all;
 }
 
