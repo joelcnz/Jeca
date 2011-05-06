@@ -103,5 +103,5 @@ ALLEGRO_BITMAP* loadBitmap( string fileName ) {
 	auto bitmap = al_load_bitmap( toStringz( fileName ) );
 	if ( bitmap is null )
 		throw new Exception( format( "%s failed to load.", fileName ) );
-
+	return bitmap;
 }
