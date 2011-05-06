@@ -13,7 +13,8 @@ void main( string[] args ) {
 	}
 	if ( args.length != 4 ) {
 		writeln( "test <ttf name> <picture file name> <sound file name>" );
-		return;
+		writeln( "Defaulting to: test DejaVuSans.ttf mysha.pcx fire.wav" );
+		args ~= "DejaVuSans.ttf mysha.pcx fire.wav".split;
 	}
 	try {
 		Init( args ); //[ "-mode window -wxh 800 600 -depth 32" ] );
@@ -46,12 +47,12 @@ void main( string[] args ) {
 	float y = 0f;
 	
 	bool exit = false;
-	while(!exit)
+	while( ! exit )
 	{
 		poll_input;
 		
 		ALLEGRO_EVENT event;
-		while(al_get_next_event( QUEUE, &event))
+		while( al_get_next_event( QUEUE, &event ) )
 		{
 			switch(event.type)
 			{
