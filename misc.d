@@ -2,6 +2,13 @@ module jeca.misc;
 
 private import std.stdio;
 
+version( linux ) {
+	immutable g_div = '/';
+}
+else version( Windows ) {
+	immutable g_div = '\\';
+}
+
 /// Save writing the symbol twice
 string trace(string varName) {
 	return `writeln("` ~ varName ~ `: ", ` ~ varName ~ `);`;
