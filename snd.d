@@ -1,7 +1,7 @@
 /**
  * Sample module a layer over allegros sound stuff
  */
-module jeca.bmp;
+module jeca.snd;
 
 private {
 	import std.stdio;

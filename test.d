@@ -1,6 +1,6 @@
 pragma( lib, "allegro5.lib" );
 pragma( lib, "dallegro5.lib" );
-pragma( lib, "misc.lib" );
+pragma( lib, "libjeca.lib" );
 
 import std.stdio;
 import std.string;
