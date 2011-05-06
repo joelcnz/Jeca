@@ -1,6 +1,6 @@
-pragma( lib, "allegro5.lib" );
-pragma( lib, "dallegro5.lib" );
-pragma( lib, "libjeca.lib" );
+pragma( lib, "liballegro5" );
+pragma( lib, "libdallegro5" );
+pragma( lib, "libjeca" );
 
 import std.stdio;
 import std.string;
@@ -10,6 +10,10 @@ void main( string[] args ) {
 	scope( exit ) {
 		shutdown_input;
 		writeln( "shutdown_input done" );
+	}
+	if ( args.length != 4 ) {
+		writeln( "test <ttf name> <picture file name> <sound file name>" );
+		return;
 	}
 	try {
 		Init( args ); //[ "-mode window -wxh 800 600 -depth 32" ] );
@@ -27,17 +31,18 @@ void main( string[] args ) {
 				`writeln( "` ~ lhs ~ `", ": failed" ); `;
 	}
 	
-	mixin( loadTest( "FONT", `al_load_font("DejaVuSans.ttf", 18, 0)` ) );
+	//mixin( loadTest( "FONT", `al_load_font("DejaVuSans.ttf", 18, 0)` ) );
+	mixin( loadTest( "FONT", `al_load_font( toStringz( args[1] ), 18, 0)` ) );
 	//FONT = al_load_font("DejaVuSans.ttf", 18, 0);
-	auto pic = al_load_bitmap( "mysha.pcx" );
-	auto snd = al_load_sample( "blowup.wav" );
+	auto pic = al_load_bitmap( toStringz( args[ 2 ] ) );
+	auto snd = al_load_sample( toStringz( args[ 3 ] ) );
 	
 	assert( snd !is null && pic !is null && FONT !is null, "media missing or failed." );
 
 	auto spr = new Bmp( 16, 16 );
 	al_set_target_bitmap( spr() );
 	
-	al_set_target_bitmap( al_get_backbuffer( screen ) );
+	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) );
 	float y = 0f;
 	
 	bool exit = false;
