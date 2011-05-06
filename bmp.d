@@ -98,7 +98,10 @@ public:
 
 ALLEGRO_BITMAP* loadBitmap( string fileName ) {
 	if ( ! exists( fileName ) )
-		new Exception( format( "%s not found", fileName ) );
+		throw new Exception( format( "%s not found", fileName ) );
 	
-	return al_load_bitmap( toStringz( fileName ) );
+	auto bitmap = al_load_bitmap( toStringz( fileName ) );
+	if ( bitmap is null )
+		throw new Exception( format( "%s failed to load.", fileName ) );
+
 }
