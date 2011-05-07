@@ -19,5 +19,6 @@ public {
 	import
 			jeca.base,
 			jeca.bmp,
+			jeca.snd,
 			jeca.misc;
 }

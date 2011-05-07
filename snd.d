@@ -16,6 +16,7 @@ public:
 	this( string filename ) {
 		_speed = _gain = _pan = 1.0;
 		_sample = al_load_sample( toStringz( filename ) );
+		assert( _sample, "sound failed" );
 	}
 	//#don't know the order of the arguments
 	void play() {
