@@ -36,7 +36,8 @@ void main( string[] args ) {
 	mixin( loadTest( "FONT", `al_load_font( toStringz( args[1] ), 18, 0)` ) );
 	//FONT = al_load_font("DejaVuSans.ttf", 18, 0);
 	auto pic = al_load_bitmap( toStringz( args[ 2 ] ) );
-	auto snd = al_load_sample( toStringz( args[ 3 ] ) );
+	auto snd = new Snd( args[ 3 ] );
+//	auto snd = al_load_sample( toStringz( args[ 3 ] ) );
 	
 	assert( snd !is null && pic !is null && FONT !is null, "media missing or failed." );
 
@@ -75,6 +76,8 @@ void main( string[] args ) {
 						case ALLEGRO_KEY_DOWN: y += 10; break;
 						case ALLEGRO_KEY_ENTER:
 							writeln( "Lets hear it!" );
+							snd.play;
+							/*
 							al_play_sample(
 								snd,
 								1.0,
@@ -83,6 +86,7 @@ void main( string[] args ) {
 								ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE,
 								null
 							);
+							*/
 							break;
 						default:
 						break;
