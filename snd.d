@@ -14,7 +14,7 @@ private {
 class Snd {
 public:
 	this( string filename ) {
-		_speed = _gain = 1.0;
+		_speed = _gain = _pan = 1.0;
 		_sample = al_load_sample( toStringz( filename ) );
 	}
 	//#don't know the order of the arguments
@@ -23,7 +23,7 @@ public:
 			_sample,
 			_speed,
 			_gain,
-			1.0,
+			_pan,
 			0,
 			null
 		);
@@ -32,5 +32,6 @@ private:
 	ALLEGRO_SAMPLE* _sample;
 	float
 		_speed,
-		_gain;
+		_gain,
+		_pan;
 }
