@@ -22,10 +22,10 @@ public:
 	void play() {
 		al_play_sample(
 			_sample,
-			_speed,
+			1.0, //_speed,
+			ALLEGRO_AUDIO_PAN_NONE, //_pan,
 			_gain,
-			_pan,
-			0,
+			ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE, // _loop
 			null
 		);
 	}
