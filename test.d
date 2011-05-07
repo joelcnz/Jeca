@@ -7,14 +7,15 @@ import std.string;
 import jeca.all;
 
 void main( string[] args ) {
-	scope( exit ) {
+	scope( exit )
 		shutdown_input;
-	}
+
 	if ( args.length != 4 ) {
 		writeln( "test <ttf name> <picture file name> <sound file name>" );
 		writeln( "Defaulting to: test DejaVuSans.ttf mysha.pcx fire.wav" );
 		args ~= "DejaVuSans.ttf mysha.pcx fire.wav".split;
 	}
+
 	try {
 		Init( args ); //[ "-mode window -wxh 800 600 -depth 32" ] );
 	} catch( Exception e ) {
@@ -25,7 +26,7 @@ void main( string[] args ) {
 		return
 			lhs ~ ` = ` ~ rhs ~ `; `
 			`if (` ~ lhs ~ ` !is null ) {`
-				`write( "loading ` ~ `", ": passed" ); `
+				`writeln( "loading ` ~ `", ": passed" ); `
 			`} `
 			`else `
 				`writeln( "` ~ lhs ~ `", ": failed" ); `;
@@ -44,7 +45,8 @@ void main( string[] args ) {
 	
 	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) );
 	float y = 0f;
-	
+
+	writeln( "Help:\nEscape to exit\ncursor down to move triangle\nEnter for sound" );
 	bool exit = false;
 	while( ! exit )
 	{
