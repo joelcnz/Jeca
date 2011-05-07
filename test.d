@@ -1,6 +1,22 @@
-pragma( lib, "liballegro5" );
-pragma( lib, "libdallegro5" );
-pragma( lib, "libjeca" );
+version( Windows ) {
+	pragma( lib, "liballegro5" );
+	pragma( lib, "libdallegro5" );
+	pragma( lib, "libjeca" );
+}
+
+version( linux ) {
+	pragma( lib, "allegro" );
+	pragma( lib, "allegro_primitives" );
+	pragma( lib, "allegro_ttf" );
+	pragma( lib, "allegro_font" );
+	pragma( lib, "allegro_image" );
+	pragma( lib, "allegro_audio" );
+	pragma( lib, "allegro_acodec" );
+
+	pragma( lib, "jeca" );
+
+	pragma( lib, "dallegro5" );
+}
 
 import std.stdio;
 import std.string;
@@ -77,16 +93,6 @@ void main( string[] args ) {
 						case ALLEGRO_KEY_ENTER:
 							writeln( "Lets hear it!" );
 							snd.play;
-							/*
-							al_play_sample(
-								snd,
-								1.0,
-								ALLEGRO_AUDIO_PAN_NONE,
-								1.0,
-								ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE,
-								null
-							);
-							*/
 							break;
 						default:
 						break;
