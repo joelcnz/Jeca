@@ -188,12 +188,14 @@ int Init( string[] args, int parts = ALL_ALLEGRO ) { //#needs in's
 						twoArguments = 2
 					}
 					alias i currentArgument;
-					int nextArgument() {
-						return i + 1;
-					}
-					int nextAfterNextArgument() {
-						return i + 2;
-					}
+					//int nextArgument() {
+					//	return i + 1;
+					//}
+					enum nextArgument = i + 1;
+					//int nextAfterNextArgument() {
+					//	return i + 2;
+					//}
+					enum nextAfterNextArgument = i + 2;
 					enum {
 						skipDash = 1
 					}

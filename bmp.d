@@ -50,6 +50,10 @@ public:
 		_bitmap = al_create_bitmap( w, h );
 	}
 	
+	~this() {
+		clear( _bitmap );
+	}
+	
 	void resize( float w, float h ) {
 		auto bmp = al_create_bitmap( cast(int)w, cast(int)h );
 		al_set_target_bitmap( bmp );

@@ -8,6 +8,8 @@ private {
 	import std.stdio;
 	import std.string;
 	import std.file;
+	import std.conv;
+	
 	import jeca.all;
 }
 
@@ -16,18 +18,30 @@ public:
 	this( string filename ) {
 		_speed = _gain = _pan = 1.0;
 		_sample = al_load_sample( toStringz( filename ) );
-		assert( _sample, "sound failed" );
+		assert( _sample, text( filename, " sound failed" ) );
 	}
+	
+	void setSample() {
+	}
+	
+	void setGain( real gain ) {
+		_gain = gain;
+	}
+	
 	//#don't know the order of the arguments
 	void play() {
 		al_play_sample(
 			_sample,
-			1.0, //_speed,
-			ALLEGRO_AUDIO_PAN_NONE, //_pan,
 			_gain,
-			ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE, // _loop
+			ALLEGRO_AUDIO_PAN_NONE,
+			_speed,
+			ALLEGRO_PLAYMODE.ALLEGRO_PLAYMODE_ONCE,
 			null
 		);
+	}
+	
+	~this() {
+		clear( _sample );
 	}
 private:
 	ALLEGRO_SAMPLE* _sample;
