@@ -1,3 +1,4 @@
+//#maybe not ref
 //#I think there's a shorter way to do it
 /**
  * Bitmap module a layer above ALLEGRO_BITMAP*
@@ -24,17 +25,23 @@ public:
 	/**
 	 *  get bitmap like:
 	 *  ---
-	 *  al_draw_bitmap( chimney(), 0, 0 );
+	 *  al_draw_bitmap( chimney(), 0, 0 ); // or
+	 *  al_draw_bitmap( chimney.bitmap, 0, 0 );
 	 *  ---
 	 */
-	ALLEGRO_BITMAP* opCall() { // maybe add ref and @property(sp)
+	@property
+	ref ALLEGRO_BITMAP* bitmap() { //#maybe not ref
 		return _bitmap;
 	}
 	
-	ALLEGRO_BITMAP* opCall( ALLEGRO_BITMAP* bmp ) {
-		return _bitmap = bmp;
+	ALLEGRO_BITMAP* opCall() {
+		return bitmap;
 	}
 	
+//	ALLEGRO_BITMAP* bitmap( ALLEGRO_BITMAP* bmp ) {
+//		return _bitmap = bmp;
+//	}
+		
 	/// Constructor: loads using passed in file name
 	this( string fileName ) {
 		try {
