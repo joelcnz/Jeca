@@ -58,7 +58,8 @@ public:
 	}
 	
 	~this() {
-		clear( _bitmap );
+		if ( _bitmap !is null )
+			al_destroy_bitmap( _bitmap );
 	}
 	
 	void resize( float w, float h ) {

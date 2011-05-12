@@ -1,4 +1,3 @@
-//#don't know the order of the arguments
 /**
  * Sample module a layer over allegros sound stuff
  */
@@ -28,7 +27,6 @@ public:
 		_gain = gain;
 	}
 	
-	//#don't know the order of the arguments
 	void play() {
 		al_play_sample(
 			_sample,
@@ -41,7 +39,8 @@ public:
 	}
 	
 	~this() {
-		clear( _sample );
+		if ( _sample !is null )
+			al_destroy_sample( _sample );
 	}
 private:
 	ALLEGRO_SAMPLE* _sample;
