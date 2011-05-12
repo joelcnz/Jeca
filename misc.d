@@ -1,11 +1,31 @@
 module jeca.misc;
 
-private import std.stdio;
+private import
+	std.stdio,
+	std.string;
+
 
 /// Save writing the symbol twice
 string trace(string varName) {
 	return `writeln("` ~ varName ~ `: ", ` ~ varName ~ `);`;
 }
+
+/// Same as above with title though
+string trace( in string title, in string varName ) {
+	return `writeln("` ~ title ~ ` ` ~ varName ~ `: ", ` ~ varName ~ `);`;
+}
+
+/+
+string traceForList( in string title, in string varName ) {
+	return `writeln("` ~ title ~ `: ", ` ~ varName ~ `);`;
+}
+
+void traceList( in string varsName ) {
+	foreach( var; varsName.split )
+		//mixin( trace( var.stringof, "var" ) );
+		mixin( traceForList( "var", var.stringof ) );
+}
++/
 
 /// TDD - test driven development tool - bit of one
 string test(in string exp, in string should)

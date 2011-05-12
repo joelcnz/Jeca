@@ -92,8 +92,11 @@ void main( string[] args ) {
 						case ALLEGRO_KEY_DOWN: y += 10; break;
 						case ALLEGRO_KEY_ENTER:
 							writeln( "Lets hear it!" );
-							snd.play;
+							snd.play(); // stops all the snd sounds
 							break;
+						case ALLEGRO_KEY_BACKSPACE:
+							snd.stop();
+						break;
 						default:
 						break;
 					}
