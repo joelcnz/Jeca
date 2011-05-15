@@ -12,6 +12,8 @@ private {
 	import jeca.all;
 }
 
+debug = Free;
+
 /*
  * Title: Bmp - to do with bitmaps (images made up of bits)
  * 
@@ -21,6 +23,7 @@ class Bmp {
 private:
 	/// Allegros bitmap
 	ALLEGRO_BITMAP* _bitmap;
+	string _name;
 public:
 	/**
 	 *  get bitmap like:
@@ -50,16 +53,25 @@ public:
 		catch( Exception e) { // or FileException
 			writeln( `Error tying to load "`, fileName, `": `, e.toString );
 		}
+		_name = fileName;
 	}
 	
 	/// Constuctor: just creates bitmap with given sizes
-	this( int w, int h ) {
+	this( int w, int h, in string name = "unititled" ) {
+		_name = name;
 		_bitmap = al_create_bitmap( w, h );
 	}
 	
 	~this() {
-		if ( _bitmap !is null )
+		if ( _bitmap !is null ) {
 			al_destroy_bitmap( _bitmap );
+			_bitmap = null;
+			debug( Free )
+				writeln( _name ~ " bitmap destroyed and set to null" );
+		} else {
+			debug( Free )
+				writeln( _name ~ " bitmap already null" );
+		}
 	}
 	
 	void resize( float w, float h ) {
