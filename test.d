@@ -1,3 +1,9 @@
+//#is a shorter version
+//#draw on spr here
+module testjeca;
+
+//version = AwfulSlow;
+
 version( Windows ) {
 	pragma( lib, "liballegro5" );
 	pragma( lib, "libdallegro5" );
@@ -29,7 +35,7 @@ void main( string[] args ) {
 	if ( args.length != 4 ) {
 		writeln( "test <ttf name> <picture file name> <sound file name>" );
 		writeln( "Defaulting to: test DejaVuSans.ttf mysha.pcx fire.wav" );
-		args ~= "DejaVuSans.ttf mysha.pcx fire.wav".split;
+		args ~= "DejaVuSans.ttf mysha.pcx fire.wav".split();
 	}
 
 	try {
@@ -60,7 +66,9 @@ void main( string[] args ) {
 	auto spr = new Bmp( 16, 16 );
 	al_set_target_bitmap( spr() );
 	
-	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) );
+	//#draw on spr here
+	
+	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) ); //#is a shorter version
 	float y = 0f;
 
 	writeln( "Help:\nEscape to exit\ncursor down to move triangle\nEnter for sound" );
@@ -113,7 +121,12 @@ void main( string[] args ) {
 		if ( key[ ALLEGRO_KEY_D ] )
 			++y;
 
-		al_clear_to_color( ALLEGRO_COLOR(0.5, 0.25, 0.125, 1) );
+		version( AwfulSlow )
+			foreach( py; 0 .. 600 )
+				foreach( px; 0 .. 800 )
+					al_put_pixel( px, py, Colour.black );
+		else
+			al_clear_to_color( ALLEGRO_COLOR(0.5, 0.25, 0.125, 1) );
 		al_draw_bitmap( pic, 50, 50, 0 );
 		al_draw_triangle( 20, y + 20, 300, y + 30, 200, y + 200, ALLEGRO_COLOR( 1, 1, 1, 1 ), 4 );
 		al_draw_text(

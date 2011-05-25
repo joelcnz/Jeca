@@ -1,5 +1,4 @@
 //#maybe not ref
-//#I think there's a shorter way to do it
 /**
  * Bitmap module a layer above ALLEGRO_BITMAP*
  */
@@ -14,17 +13,54 @@ private {
 
 debug = Free;
 
-/*
- * Title: Bmp - to do with bitmaps (images made up of bits)
+/**
+ * Title: Bmp - to do with bitmaps (images made up of pixels)
  * 
- * terminolagy(sp): bitmap = ALLEGRO_BITMAP* and bmp is Bmp
+ * Terminolagy(sp):
+ * bitmap is a ALLEGRO_BITMAP* object<br>
+ * bmp is a Bmp object<br>
  */
 class Bmp {
 private:
-	/// Allegros bitmap
+	// Allegros bitmap
 	ALLEGRO_BITMAP* _bitmap;
 	string _name;
 public:
+	/**
+	 * Load bitmap picture
+	 * throws: exceptions if file name not exist or get a null
+	 */
+	static ALLEGRO_BITMAP* loadBitmap( string fileName ) {
+		if ( ! exists( fileName ) )
+			throw new Exception( format( "%s not found", fileName ) );
+		
+		auto bitmap = al_load_bitmap( toStringz( fileName ) );
+		if ( bitmap is null )
+			throw new Exception( format( "%s failed to load.", fileName ) );
+		return bitmap;
+	}
+
+	/// get a slice
+	/// Note: sets target bitmap
+	static Bmp getBmpSlice(
+		Bmp src, // source Bmp
+		real sx, // source left
+		real sy,
+		real w, //source and destination
+		real h,
+		real dx, // destination
+		real dy,
+		int flags = 0 // 0 - normal
+	) {
+
+		auto bmp = new Bmp( cast(int)w, cast(int)h );
+
+		al_set_target_bitmap( bmp() );
+		al_draw_bitmap_region( src(), sx, sy, w, h, dx, dy, flags );
+
+		return bmp;
+	}
+
 	/**
 	 *  get bitmap like:
 	 *  ---
@@ -51,13 +87,13 @@ public:
 			_bitmap = loadBitmap( fileName );
 		}
 		catch( Exception e) { // or FileException
-			writeln( `Error tying to load "`, fileName, `": `, e.toString );
+			new Exception( format( `Error tying to load "%s": %s`, fileName, e.toString() ) );
 		}
 		_name = fileName;
 	}
 	
 	/// Constuctor: just creates bitmap with given sizes
-	this( int w, int h, in string name = "unititled" ) {
+	this( int w, int h, in string name = "untitled" ) {
 		_name = name;
 		_bitmap = al_create_bitmap( w, h );
 	}
@@ -87,44 +123,15 @@ public:
 		_bitmap = bmp;
 		al_destroy_bitmap( tmp );
 		tmp = null;
-		al_set_target_bitmap( al_get_backbuffer( DISPLAY ) ); // switch it back! //#I think there's a shorter way to do it
-	}
-	
-	/// get a slice
-	static Bmp getBmpSlice(
-		Bmp src, // source Bmp
-		real sx, // source left
-		real sy,
-		real w, //source and destination
-		real h,
-		real dx, // destination
-		real dy,
-		int flags = 0 // 0 - normal
-	) {
-
-		auto bmp = new Bmp( cast(int)w, cast(int)h );
-
-		al_set_target_bitmap( bmp() );
-		al_draw_bitmap_region( src(), sx, sy, w, h, dx, dy, flags );
-
-		return bmp;
+		al_set_target_backbuffer( DISPLAY );
 	}
 	
 	typeof(this) draw( ALLEGRO_BITMAP* dest, real x, real y, int flags = 0 ) {
 
 		al_set_target_bitmap( dest );
 		al_draw_bitmap( _bitmap, x, y, flags );
-		
+		al_set_target_backbuffer( DISPLAY );
+
 		return this;
 	}
-}
-
-ALLEGRO_BITMAP* loadBitmap( string fileName ) {
-	if ( ! exists( fileName ) )
-		throw new Exception( format( "%s not found", fileName ) );
-	
-	auto bitmap = al_load_bitmap( toStringz( fileName ) );
-	if ( bitmap is null )
-		throw new Exception( format( "%s failed to load.", fileName ) );
-	return bitmap;
 }
