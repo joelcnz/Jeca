@@ -31,6 +31,7 @@ private {
 	import std.string;
 	import std.file;
 	import std.conv; // like to!string - //#but what about to!char*( c_str );
+	import std.array;
 
 	import jeca.all;
 }
@@ -221,7 +222,10 @@ int Init( string[] args, int parts = ALL_ALLEGRO ) { //#needs in's
 									"noframe" : ALLEGRO_NOFRAME,
 									"opengl" : ALLEGRO_OPENGL
 								];
-								display_flags |= dflag[ args[ nextArgument ] ];
+								if ( args[ nextArgument ] in dflag )
+									display_flags |= dflag[ args[ nextArgument ] ];
+								else
+									writeln( args[ nextArgument ], " not valid." );
 							}
 						break;
 					} // switch
@@ -248,6 +252,12 @@ int Init( string[] args, int parts = ALL_ALLEGRO ) { //#needs in's
 	return 0;
 }
 
+void Deinit( string message = "" ) {
+	shutdown_input;
+	if ( ! message.empty )
+		writeln( message );
+}
+
 /** initialises the input emulation */
 void init_input()
 {
@@ -262,12 +272,13 @@ void init_input()
 /** closes down the input emulation */
 void shutdown_input()
 {
+	scope( success )
+		writeln( "shutdown_input successfully" );
    al_destroy_mutex(keybuf_mutex);
    keybuf_mutex = null;
 
    al_destroy_event_queue(input_queue);
    input_queue = null;
-   writeln( "shutdown_input exiting.." );
 }
 
 /** helper function to add a keypress to a buffer */

@@ -1,8 +1,9 @@
+//#mucked up the program so it won't exit like normal or do any thing
 //#is a shorter version
 //#draw on spr here
 module testjeca;
 
-//version = AwfulSlow;
+//version = AwfulSlow; // note: not fun to exit, actually not fun any way
 
 version( Windows ) {
 	pragma( lib, "liballegro5" );
@@ -29,9 +30,6 @@ import std.string;
 import jeca.all;
 
 void main( string[] args ) {
-	scope( exit )
-		shutdown_input;
-
 	if ( args.length != 4 ) {
 		writeln( "test <ttf name> <picture file name> <sound file name>" );
 		writeln( "Defaulting to: test DejaVuSans.ttf mysha.pcx fire.wav" );
@@ -39,10 +37,11 @@ void main( string[] args ) {
 	}
 
 	try {
-		Init( args ); //[ "-mode window -wxh 800 600 -depth 32" ] );
+		Init( args ); //[ "-mode window -wxh 800 600" ] );
 	} catch( Exception e ) {
 		writeln( "Caught in test.d in main: " ~ e.toString );
 	}
+	scope( exit ) Deinit( "Farewell.." );
 	
 	string loadTest( in string lhs, in string rhs ) {
 		return
@@ -71,6 +70,8 @@ void main( string[] args ) {
 	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) ); //#is a shorter version
 	float y = 0f;
 
+	ALLEGRO_BITMAP* stamp = al_create_bitmap( 800, 600 );
+	
 	writeln( "Help:\nEscape to exit\ncursor down to move triangle\nEnter for sound" );
 	bool exit = false;
 	while( ! exit )
@@ -121,10 +122,14 @@ void main( string[] args ) {
 		if ( key[ ALLEGRO_KEY_D ] )
 			++y;
 
-		version( AwfulSlow )
-			foreach( py; 0 .. 600 )
-				foreach( px; 0 .. 800 )
+
+		al_set_target_bitmap( stamp );
+		version( AwfulSlow ) {
+			//#mucked up the program so it won't exit like normal or do any thing
+			foreach( py; 0 .. 6 )
+				foreach( px; 0 .. 8 ) 
 					al_put_pixel( px, py, Colour.black );
+		}
 		else
 			al_clear_to_color( ALLEGRO_COLOR(0.5, 0.25, 0.125, 1) );
 		al_draw_bitmap( pic, 50, 50, 0 );
@@ -135,6 +140,9 @@ void main( string[] args ) {
 			70, 40,
 			ALLEGRO_ALIGN_CENTRE, toStringz( format( "y = %s", y ) )
 		);
+		al_set_target_bitmap( al_get_backbuffer( DISPLAY ) );
+		al_draw_bitmap( stamp, 0, 0, 0 );
+
 		al_flip_display;
 	}
 }

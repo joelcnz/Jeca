@@ -11,7 +11,7 @@ private {
 	import jeca.all;
 }
 
-debug = Free;
+//debug = Free;
 
 /**
  * Title: Bmp - to do with bitmaps (images made up of pixels)
@@ -43,7 +43,7 @@ public:
 	/// get a slice
 	/// Note: sets target bitmap
 	static Bmp getBmpSlice(
-		Bmp src, // source Bmp
+		ALLEGRO_BITMAP* src, // source Bmp
 		real sx, // source left
 		real sy,
 		real w, //source and destination
@@ -56,7 +56,7 @@ public:
 		auto bmp = new Bmp( cast(int)w, cast(int)h );
 
 		al_set_target_bitmap( bmp() );
-		al_draw_bitmap_region( src(), sx, sy, w, h, dx, dy, flags );
+		al_draw_bitmap_region( src, sx, sy, w, h, dx, dy, flags );
 
 		return bmp;
 	}
