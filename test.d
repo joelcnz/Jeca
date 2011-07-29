@@ -1,9 +1,10 @@
+//#msecs
 //#mucked up the program so it won't exit like normal or do any thing
 //#is a shorter version
 //#draw on spr here
 module testjeca;
 
-//version = AwfulSlow; // note: not fun to exit, actually not fun any way
+version = AwfulSlow; // note: not fun to exit, actually not fun any way
 
 version( Windows ) {
 	pragma( lib, "liballegro5" );
@@ -27,6 +28,8 @@ version( linux ) {
 
 import std.stdio;
 import std.string;
+import std.datetime;
+
 import jeca.all;
 
 void main( string[] args ) {
@@ -43,6 +46,11 @@ void main( string[] args ) {
 	}
 	scope( exit ) Deinit( "Farewell.." );
 	
+version( none ) {
+	writeln( "Press any key to continue" );
+	readkey;
+}
+
 	string loadTest( in string lhs, in string rhs ) {
 		return
 			lhs ~ ` = ` ~ rhs ~ `; `
@@ -70,68 +78,76 @@ void main( string[] args ) {
 	al_set_target_bitmap( al_get_backbuffer( DISPLAY ) ); //#is a shorter version
 	float y = 0f;
 
-	ALLEGRO_BITMAP* stamp = al_create_bitmap( 800, 600 );
+	ALLEGRO_BITMAP* stamp = al_create_bitmap( SCX, SCY );
 	
 	writeln( "Help:\nEscape to exit\ncursor down to move triangle\nEnter for sound" );
 	bool exit = false;
 	while( ! exit )
 	{
-		poll_input;
-		
-		ALLEGRO_EVENT event;
-		while( al_get_next_event( QUEUE, &event ) )
-		{
-			switch(event.type)
+		StopWatch sw;
+		sw.start;
+		do {
+			poll_input;
+			
+			ALLEGRO_EVENT event;
+			while( al_get_next_event( QUEUE, &event ) )
 			{
-				// close button includes Alt + F4
-				case ALLEGRO_EVENT_DISPLAY_CLOSE:
+				switch(event.type)
 				{
-					exit = true;
-					break;
-				}
-				case ALLEGRO_EVENT_KEY_DOWN:
-				{
-					switch(event.keyboard.keycode)
+					// close button includes Alt + F4
+					case ALLEGRO_EVENT_DISPLAY_CLOSE:
 					{
-						case ALLEGRO_KEY_ESCAPE:
-						{
-							exit = true;
-							break;
-						}
-						case ALLEGRO_KEY_DOWN: y += 10; break;
-						case ALLEGRO_KEY_ENTER:
-							writeln( "Lets hear it!" );
-							snd.play(); // stops all the snd sounds
-							break;
-						case ALLEGRO_KEY_BACKSPACE:
-							snd.stop();
-						break;
-						default:
+						exit = true;
 						break;
 					}
-					break;
+					case ALLEGRO_EVENT_KEY_DOWN:
+					{
+						switch(event.keyboard.keycode)
+						{
+							case ALLEGRO_KEY_ESCAPE:
+							{
+								exit = true;
+								break;
+							}
+							case ALLEGRO_KEY_DOWN: y += 10; break;
+							case ALLEGRO_KEY_ENTER:
+								writeln( "Lets hear it!" );
+								snd.play(); // stops all the snd sounds
+								break;
+							case ALLEGRO_KEY_BACKSPACE:
+								snd.stop();
+							break;
+							default:
+							break;
+						}
+						break;
+					}
+					case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+					{
+						exit = true;
+						break;
+					}
+					default:
 				}
-				case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-				{
-					exit = false;
-					break;
-				}
-				default:
 			}
-		}
-		if ( key[ ALLEGRO_KEY_D ] )
-			++y;
+			if ( key[ ALLEGRO_KEY_D ] )
+				++y;
+//			writeln( "Time: ", sw.peek().hnsecs );
+//#msecs
+		} while( sw.peek().hnsecs < 100 );
 
 
 		al_set_target_bitmap( stamp );
 		version( AwfulSlow ) {
 			//#mucked up the program so it won't exit like normal or do any thing
-			foreach( py; 0 .. 6 )
-				foreach( px; 0 .. 8 ) 
+			foreach( py; 0 .. SCY )
+				foreach( px; 0 .. SCX ) 
 					al_put_pixel( px, py, Colour.black );
+					//al_draw_pixel( px, py, Colour.black );
 		}
 		else
 			al_clear_to_color( ALLEGRO_COLOR(0.5, 0.25, 0.125, 1) );
+
 		al_draw_bitmap( pic, 50, 50, 0 );
 		al_draw_triangle( 20, y + 20, 300, y + 30, 200, y + 200, ALLEGRO_COLOR( 1, 1, 1, 1 ), 4 );
 		al_draw_text(
@@ -144,5 +160,7 @@ void main( string[] args ) {
 		al_draw_bitmap( stamp, 0, 0, 0 );
 
 		al_flip_display;
+		
+		al_rest( 0.01 );
 	}
 }

@@ -1,3 +1,4 @@
+//#not work
 //#not sure about this
 //#needs in's
 //#may not need to check args length
@@ -32,6 +33,7 @@ private {
 	import std.file;
 	import std.conv; // like to!string - //#but what about to!char*( c_str );
 	import std.array;
+	import std.c.string; //: cmem = memmove;
 
 	import jeca.all;
 }
@@ -70,7 +72,7 @@ enum {
 
 alias al_map_rgb makecol;
 
-/// kinda globle
+/// kinda global
 ALLEGRO_DISPLAY* DISPLAY;
 
 ALLEGRO_EVENT_QUEUE* QUEUE;
@@ -345,6 +347,7 @@ int keypressed()
    return keybuf_len > 0;
 }
 
+//#not work
 /** emulate readkey(), except this version never blocks */
 int readkey()
 {
@@ -357,6 +360,11 @@ int readkey()
    if (keybuf_len > 0) {
       c = keybuf[0];
       keybuf_len--;
+      
+    //  int tmp = keybuf[ $ - 1 ];
+    //  for( int i = keybuf.length - 2; i >= 0; --i )
+	//	keybuf[ i ] = keybuf[ i + 1 ];
+      memmove(keybuf.ptr, keybuf.ptr + 1, keybuf[0].sizeof * keybuf_len);
       //memmove(keybuf, keybuf + 1, keybuf[0].sizeof * keybuf_len); //#I just commented it out, 'readkey' may not Work!
    }
 

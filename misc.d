@@ -7,19 +7,30 @@ private import
 
 alias double dub;
 
+dub distance( dub x, dub y, dub tx, dub ty ) {
+  return sqrt( ( x - tx ) ^^ 2 + ( y - ty ) ^^ 2 );
+}
+
+/+
 dub distance( dub x,dub y, dub tx,dub ty )
 {
   return abs( x - tx ) + abs( y - ty ); // maybe return absl( (x-tx)+(y-ty) );
 }
++/
 
 /// Save writing the symbol twice
-string trace(string varName) {
-	return `writeln("` ~ varName ~ `: ", ` ~ varName ~ `);`;
-}
-
-/// Same as above with title though
-string trace( in string title, in string varName ) {
-	return `writeln("` ~ title ~ ` ` ~ varName ~ `: ", ` ~ varName ~ `);`;
+/// ---
+/// mixin( trace( "xpos", "ypos" ) );
+/// Output:
+/// xpos: 1979
+/// ypos: 30
+/// ---
+string trace( in string[] strs... ) {
+	string result;
+	foreach( str; strs ) {
+		result ~= `writeln( "` ~ str ~ `: ", ` ~ str ~ `);` ~ newline;
+	}
+	return result;
 }
 
 /+

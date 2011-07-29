@@ -11,7 +11,7 @@ private {
 	import jeca.all;
 }
 
-//debug = Free;
+debug = Free;
 
 /**
  * Title: Bmp - to do with bitmaps (images made up of pixels)
