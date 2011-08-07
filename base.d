@@ -1,6 +1,7 @@
+//#not sure on struct
+//#not sure on the names
 //#not work
 //#not sure about this
-//#needs in's
 //#may not need to check args length
 //#should be under file, and have append in its name
 //#but what about to!char*( c_str );
@@ -97,6 +98,9 @@ struct ColourStruct {
 }
 ColourStruct Colour;
 
+//#not sure on the names
+ExitHandler exitHandler;
+
 /**
  * Set every thing up
  * 
@@ -107,7 +111,7 @@ ColourStruct Colour;
  * Uses mixin's for each install allegro part
  * Returns: 0 on success
  */
-int Init( string[] args, int parts = ALL_ALLEGRO ) { //#needs in's
+int Init( string[] args, int parts = ALL_ALLEGRO ) {
 	foreach( arg; args ) {
 		switch( arg ) {
 			default:
@@ -147,6 +151,7 @@ int Init( string[] args, int parts = ALL_ALLEGRO ) { //#needs in's
 		if ( parts & KEYBOARD ) {
 			mixin( checkOut( "al_install_keyboard" ) );
 			al_register_event_source( QUEUE, al_get_keyboard_event_source );
+			
 		}
 		else
 			writeln( "No keyboard" );
@@ -391,4 +396,40 @@ void tofile( string content ) {
 	auto file = File( "z.txt", "a" );
 	file.write( content ~ "\n\r" );
 	file.close;
+}
+
+//#not sure on struct
+struct ExitHandler {
+private:
+	ALLEGRO_EVENT event;
+	bool getNextEvent() {
+		return al_get_next_event( QUEUE, &event );
+	}
+public:
+	auto doKeysAndCloseHandling() {
+		auto
+			exitFalse = false,
+			exitTrue = true;
+		
+		poll_input; //#may be not needed after a library fix
+		
+		if ( key[ ALLEGRO_KEY_ESCAPE ] )
+			return exitTrue;
+		
+		// keep going through current events till none left, in which case contiune
+		while( getNextEvent() )
+		{
+			switch( event.type )
+			{
+				// close button includes Alt + F4 etc
+				case ALLEGRO_EVENT_DISPLAY_CLOSE:
+					return exitTrue;
+					
+				default:
+				break;
+			}
+		}
+		
+		return exitFalse;
+	}
 }

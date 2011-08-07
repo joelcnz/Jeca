@@ -1,3 +1,4 @@
+//#not working
 module jeca.misc;
 
 private import
@@ -17,7 +18,7 @@ dub quickDistance( dub x,dub y, dub tx,dub ty )
   return abs( x - tx ) + abs( y - ty ); // maybe return absl( (x-tx)+(y-ty) );
 }
 
-/// Save writing the symbol twice
+/// Save writing the symbol twice each time
 /// ---
 /// mixin( trace( "xpos", "ypos" ) );
 /// Output:
@@ -27,20 +28,22 @@ dub quickDistance( dub x,dub y, dub tx,dub ty )
 string trace( in string[] strs... ) {
 	string result;
 	foreach( str; strs ) {
-		result ~= `writeln( "` ~ str ~ `: ", ` ~ str ~ `);` ~ newline;
+		result ~= `writeln( "` ~ str ~ `: ", ` ~ str ~ ` );` ~ newline;
 	}
+
 	return result;
 }
 
+//#not working
 /+
-string traceForList( in string title, in string varName ) {
-	return `writeln("` ~ title ~ `: ", ` ~ varName ~ `);`;
-}
+string traceLine( in string[] strs... ) {
+	string result = `writeln( "`;
+	foreach( str; strs ) {
+		result ~= str ~ `: ", ` ~ str ~ `, " "`;
+	}
+	result = result[ 0 .. $ - 2 ] ~ ` );`;
 
-void traceList( in string varsName ) {
-	foreach( var; varsName.split )
-		//mixin( trace( var.stringof, "var" ) );
-		mixin( traceForList( "var", var.stringof ) );
+	return result;
 }
 +/
 
