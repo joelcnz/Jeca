@@ -98,9 +98,6 @@ struct ColourStruct {
 }
 ColourStruct Colour;
 
-//#not sure on the names
-ExitHandler exitHandler;
-
 /**
  * Set every thing up
  * 
@@ -433,3 +430,5 @@ public:
 		return exitFalse;
 	}
 }
+//#not sure on the names
+ExitHandler exitHandler;

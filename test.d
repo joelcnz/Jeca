@@ -142,7 +142,7 @@ version( none ) {
 			//#mucked up the program so it won't exit like normal or do any thing
 			foreach( py; 0 .. SCY )
 				foreach( px; 0 .. SCX ) 
-					al_put_pixel( px, py, Colour.black );
+					al_draw_pixel( px, py, Colour.black );
 					//al_draw_pixel( px, py, Colour.black );
 		}
 		else

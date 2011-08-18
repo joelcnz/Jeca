@@ -1,4 +1,3 @@
-//#not working
 module jeca.misc;
 
 private import
@@ -6,8 +5,11 @@ private import
 	std.string,
 	std.math;
 
+//void main() {}
+
 alias double dub;
 
+/// calculate distance between two 2D points
 dub distance( dub x, dub y, dub tx, dub ty ) {
   return sqrt( ( x - tx ) ^^ 2 + ( y - ty ) ^^ 2 );
 }
@@ -34,18 +36,32 @@ string trace( in string[] strs... ) {
 	return result;
 }
 
-//#not working
-/+
+/**
+ * int a = 1; double b = 0.2; string c = "three";
+ * 
+ * eg. mixin( traceLine( "a b c".split ) );
+ * 
+ * Output:
+ * 
+ * (a: 1) (b: 0.2) (c: three)
+ */
 string traceLine( in string[] strs... ) {
-	string result = `writeln( "`;
-	foreach( str; strs ) {
-		result ~= str ~ `: ", ` ~ str ~ `, " "`;
+	string result;
+
+	foreach( i, str; strs ) {
+		result ~= `writef( "(` ~ str ~ `: %s) ", ` ~ str ~ ` );`;
 	}
-	result = result[ 0 .. $ - 2 ] ~ ` );`;
+	result ~= `writeln();`;
 
 	return result;
 }
-+/
+
+unittest {
+	int a = 1;
+	double b = 0.2;
+	string c = "three";
+	mixin( traceLine( "a b c".split ) );
+}
 
 /// TDD - test driven development tool - bit of one
 string test(in string exp, in string should)
