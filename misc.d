@@ -1,13 +1,18 @@
+//#workings
 module jeca.misc;
 
 private import
 	std.stdio,
 	std.string,
+	std.conv,
 	std.math;
 
-//void main() {}
-
 alias double dub;
+
+/// char to char*
+char* jtoCharPtr( dchar d ) {
+	return cast(char*)to!(char[])(d ~ "\0"d).dup.ptr;
+}
 
 /// calculate distance between two 2D points
 dub distance( dub x, dub y, dub tx, dub ty ) {
@@ -84,3 +89,4 @@ string test(in string exp, in string should)
 		return "";
 	}
 }
+
