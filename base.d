@@ -48,6 +48,15 @@ static int keybuf_len = 0;
 static ALLEGRO_MUTEX *keybuf_mutex;
 static ALLEGRO_EVENT_QUEUE *input_queue;
 
+
+ALLEGRO_COLOR getColour( string name ) {
+	float r,g,b;
+	if ( al_color_name_to_rgb( toStringz( name ), &r, &g, &b ) == false )
+		return Colour.gray;
+	
+	return al_map_rgb_f( r, g, b );
+}
+
 // switch posiblities(sp)
 enum {
 	NO_ALLEGRO = 0,

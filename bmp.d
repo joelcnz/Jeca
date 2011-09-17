@@ -1,3 +1,5 @@
+//#wrong way to do it
+//#I don't think I need this
 //#colour blend
 //#maybe not ref
 /**
@@ -11,6 +13,14 @@ private {
 	import std.file;
 
 	import jeca.all;
+}
+
+@property int DISPLAY_W() {
+	return al_get_display_width( DISPLAY );
+}
+
+@property int DISPLAY_H() {
+	return al_get_display_height( DISPLAY );
 }
 
 //debug = Free;
@@ -28,6 +38,9 @@ private:
 	ALLEGRO_BITMAP* _bitmap;
 	string _name;
 public:
+	@property int width() { return al_get_bitmap_width( _bitmap ); }
+	@property int height() { return al_get_bitmap_height( _bitmap ); }
+
 	/**
 	 * Load bitmap picture
 	 * throws: exceptions if file name not exist or get a null
@@ -40,6 +53,20 @@ public:
 		if ( bitmap is null )
 			throw new Exception( format( "%s failed to load.", fileName ) );
 		return bitmap;
+	}
+	
+	static Bmp loadBmp( string fileName ) {
+		auto hold = al_get_target_bitmap;
+		ALLEGRO_BITMAP* bitmap = loadBitmap( fileName );
+		Bmp bmp = new Bmp( al_get_bitmap_width( bitmap ), al_get_bitmap_height( bitmap ) );
+		
+		al_set_target_bitmap( bmp.bitmap );
+		al_draw_bitmap( bitmap, 0, 0, 0 );
+		al_destroy_bitmap( bitmap );
+		
+		al_set_target_bitmap( hold );
+		
+		return bmp;
 	}
 
 	/// get a slice
@@ -103,7 +130,7 @@ public:
 	~this() {
 		if ( _bitmap !is null ) {
 			al_destroy_bitmap( _bitmap );
-			_bitmap = null;
+			//_bitmap = null; //#I don't think I need this
 			debug( Free )
 				writeln( _name ~ " bitmap destroyed and set to null" );
 		} else {
@@ -129,10 +156,9 @@ public:
 	}
 	
 	typeof(this) draw( ALLEGRO_BITMAP* dest, real x, real y, int flags = 0 ) {
-
 		al_set_target_bitmap( dest );
 		al_draw_bitmap( _bitmap, x, y, flags );
-		al_set_target_backbuffer( DISPLAY );
+		al_set_target_backbuffer( DISPLAY ); //#wrong way to do it
 
 		return this;
 	}

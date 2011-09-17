@@ -1,13 +1,68 @@
-//#workings
+//#redundant - use std.conv.text
 module jeca.misc;
 
 private import
 	std.stdio,
 	std.string,
 	std.conv,
-	std.math;
+	std.math,
+	std.c.string;
+
+version( Windows ) {
+	extern(Windows) {
+	   bool OpenClipboard(void*);
+	   void* GetClipboardData(uint);
+	   void* SetClipboardData(uint, void*);
+	   bool EmptyClipboard();
+	   bool CloseClipboard();
+	   void* GlobalAlloc(uint, size_t);
+	   void* GlobalLock(void*);
+	   bool GlobalUnlock(void*);
+	}
+
+	string getTextClipBoard() {
+	   if (OpenClipboard(null)) {
+		   scope( exit ) CloseClipboard();
+		   auto cstr = cast(char*)GetClipboardData( 1 );
+		   if(cstr)
+			   return cstr[0..strlen(cstr)].idup;
+		}
+		return null;
+	}
+
+	string setTextClipboard( string mystr ) {
+		if (OpenClipboard(null)) {
+			scope( exit ) CloseClipboard();
+			EmptyClipboard();
+			void* handle = GlobalAlloc(2, mystr.length + 1);
+			void* ptr = GlobalLock(handle);
+			memcpy(ptr, toStringz(mystr), mystr.length + 1);
+			GlobalUnlock(handle);
+
+			SetClipboardData( 1, handle);
+		}
+		return mystr;
+	}
+}
 
 alias double dub;
+
+/// like format, but not having %s etc
+//#redundant - use std.conv.text
+string getWriteToString(T...)(T args) {
+	string result = "";
+	foreach( e; tuple( args ).expand )
+		result ~= to!string( e );
+	return result;
+}
+
+ubyte chr( int c ) {
+	return c & 0xFF;
+}
+
+bool tkey( int let, int code ) {
+	return let >> 8 == code;
+}
 
 /// char to char*
 char* jtoCharPtr( dchar d ) {
