@@ -108,7 +108,7 @@ string trace( in string[] strs... ) {
 string traceLine( in string[] strs... ) {
 	string result;
 
-	foreach( i, str; strs ) {
+	foreach( str; strs ) {
 		result ~= `writef( "(` ~ str ~ `: %s) ", ` ~ str ~ ` );`;
 	}
 	result ~= `writeln();`;

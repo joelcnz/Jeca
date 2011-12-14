@@ -24,6 +24,10 @@ public:
 		assert( _sample, text( filename, " sound failed" ) );
 	}
 	
+	void speed( float speed ) {
+		_speed = speed;
+	}
+	
 	void setSample() {
 	}
 	

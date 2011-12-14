@@ -1,6 +1,6 @@
 //#not sure on struct
 //#not sure on the names
-//#not work
+//#works differently than I was expecting
 //#not sure about this
 //#may not need to check args length
 //#should be under file, and have append in its name
@@ -358,7 +358,7 @@ int keypressed()
    return keybuf_len > 0;
 }
 
-//#not work
+//#works differently than I was expecting
 /** emulate readkey(), except this version never blocks */
 int readkey()
 {
@@ -417,7 +417,7 @@ public:
 			exitFalse = false,
 			exitTrue = true;
 		
-		poll_input; //#may be not needed after a library fix
+		poll_input;
 		
 		if ( key[ ALLEGRO_KEY_ESCAPE ] )
 			return exitTrue;

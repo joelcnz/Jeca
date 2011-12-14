@@ -81,11 +81,14 @@ public:
 		real dy,
 		int flags = 0 // 0 - normal
 	) {
+		auto currentBitmap = al_get_target_bitmap;
 
 		auto bmp = new Bmp( cast(int)w, cast(int)h );
 
 		al_set_target_bitmap( bmp() );
 		al_draw_bitmap_region( src, sx, sy, w, h, dx, dy, flags );
+
+		al_set_target_bitmap( currentBitmap );
 
 		return bmp;
 	}

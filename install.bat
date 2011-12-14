@@ -1,7 +1,7 @@
 echo -- Installing Jeca library --
-set DMDWIN=\jpro\dmd2\windows
+set DWIN=\jpro\dmd2\windows
 rem Copy lib file and import directories
-copy libjeca.lib %DMDWIN%\lib
-md %DMDWIN%\import\Jeca
-copy *.d %DMDWIN%\import\Jeca
-del %DMDWIN%\import\Jeca\test.d
+copy libjeca.lib %DWIN%\lib
+md %DWIN%\import\Jeca
+copy *.d %DWIN%\import\Jeca
+del %DWIN%\import\Jeca\test.d
